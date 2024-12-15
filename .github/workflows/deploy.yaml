@@ -1,3 +1,4 @@
+
 name: Terraform Deployment
 
 on:
@@ -8,29 +9,24 @@ on:
 jobs:
   terraform:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.0.0
+          terraform_version: 1.5.0  # Or your preferred version
 
       - name: Terraform Init
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan -var="gcp_project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=${{ secrets.REGION }}"
         env:
-          TF_VAR_gcp_credentials: ${{ secrets.GOOGLE_CREDENTIALS }}  # Pass GCP credentials
-          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}        # Pass GCP project ID
-          TF_VAR_region: ${{ secrets.REGION }}                        # Pass region
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve tfplan -var="gcp_project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=${{ secrets.REGION }}"
         env:
-          TF_VAR_gcp_credentials: ${{ secrets.GOOGLE_CREDENTIALS }}  # Pass GCP credentials
-          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}        # Pass GCP project ID
-          TF_VAR_region: ${{ secrets.REGION }}                        
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
