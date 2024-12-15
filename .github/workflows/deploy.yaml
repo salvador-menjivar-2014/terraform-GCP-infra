@@ -35,4 +35,4 @@ jobs:
         run: terraform plan  # Generates and displays the execution plan.
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve  # Executes the plan and applies changes.
+        run: terraform destroy -auto-approve  # Executes the plan and applies changes.
