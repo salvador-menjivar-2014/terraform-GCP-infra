@@ -1,11 +1,14 @@
-
-
-variable "gcp_project_id" {
-  description = "The ID of the GCP project"
+variable "project_id" {
+  description = "Google Cloud Project ID"
   type        = string
 }
 
 variable "region" {
-  description = "The region for GCP resources"
+  description = "Google Cloud Region"
+  type        = string
+}
+
+variable "bucket_name" {
+  description = "Name of the testing bucket"
   type        = string
 }

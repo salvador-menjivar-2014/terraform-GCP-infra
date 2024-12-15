@@ -1,32 +1,39 @@
-
-name: Terraform Deployment
+name: Deploy Terraform
 
 on:
   push:
     branches:
-      - main
+      - main  # Triggers workflow on push to the main branch.
 
 jobs:
-  terraform:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout Code
+        uses: actions/checkout@v3  # Fetch your repository's code.
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.0  # Or your preferred version
+          terraform_version: 1.5.0  # Specify the Terraform version.
+
+      - name: Authenticate GCP
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Set Environment Variables
+        run: |
+          echo "TF_VAR_project_id=${{ secrets.PROJECT_ID }}" >> $GITHUB_ENV
+          echo "TF_VAR_region=${{ secrets.REGION }}" >> $GITHUB_ENV
+          echo "TF_VAR_bucket_name=${{ secrets.BUCKET_NAME }}" >> $GITHUB_ENV
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init  # Initializes Terraform.
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan -var="gcp_project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=${{ secrets.REGION }}"
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: terraform plan  # Generates and displays the execution plan.
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan -var="gcp_project_id=${{ secrets.GCP_PROJECT_ID }}" -var="region=${{ secrets.REGION }}"
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: terraform apply -auto-approve  # Executes the plan and applies changes.

@@ -1,15 +1,5 @@
-
-
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 5.0" # Or your preferred version
-    }
-  }
-}
-
 provider "google" {
+<<<<<<< HEAD
   credentials = env("GOOGLE_CREDENTIALS") # Use the environment variable directly
   project     = var.gcp_project_id
   region      = var.region
@@ -41,5 +31,14 @@ resource "google_compute_instance" "default" {
 
 output "ip_address" {
   value = google_compute_instance.default.network_interface[0].access_config[0].nat_ip
+=======
+  project = var.project_id
+  region  = var.region
+>>>>>>> 0f7a15f (new updates)
 }
 
+# Create a testing bucket
+resource "google_storage_bucket" "testing_bucket" {
+  name     = var.bucket_name
+  location = var.region
+}
