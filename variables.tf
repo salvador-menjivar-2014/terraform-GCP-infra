@@ -8,7 +8,3 @@ variable "region" {
   type        = string
 }
 
-variable "bucket_name" {
-  description = "Name of the testing bucket"
-  type        = string
-}
