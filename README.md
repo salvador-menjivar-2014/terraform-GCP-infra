@@ -1,1 +1,0 @@
-# terraform-GCP-infra
