@@ -43,9 +43,9 @@ resource "google_compute_subnetwork" "subnetwork" {
 resource "google_compute_global_address" "reserved_peering_range" {
   name          = "my-reserved-peering-range-2024"
   address_type  = "INTERNAL"
-  prefix_length = 16  # Adjust as needed
-  purpose       = "VPC_PEERING"  # Set the purpose to VPC_PEERING
-  network       = google_compute_network.vpc_network.id  # Reference the VPC network
+  prefix_length = 16  
+  purpose       = "VPC_PEERING"  
+  network       = google_compute_network.vpc_network.id  
 }
 
 # Create the Backup and DR management server
@@ -56,6 +56,9 @@ resource "google_backup_dr_management_server" "ms_console" {
   type     = "BACKUP_RESTORE"
 
   networks {
-    network      = google_compute_network.vpc_network.id  # Reference the VPC network
+    network      = google_compute_network.vpc_network.id  
     peering_mode = "PRIVATE_SERVICE_ACCESS"
   }
+
+  depends_on = [google_service_networking_connection.default]
+} 
