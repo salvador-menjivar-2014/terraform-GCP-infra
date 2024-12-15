@@ -17,7 +17,7 @@ provider "google" {
 
 
 resource "google_compute_instance" "default" {
-  name         = "my-linux-vm"
+  name         = "my-new-vm-test"
   machine_type = "e2-medium"
   zone         = "us-central1-a"  # Replace with your desired zone
 
