@@ -23,10 +23,14 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
+        env:
+          TF_VAR_gcp_credentials: ${{ secrets.GOOGLE_CREDENTIALS }}  # Pass GCP credentials
+          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}        # Pass GCP project ID
+          TF_VAR_region: ${{ secrets.REGION }}                        # Pass region
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
         env:
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-          REGION: ${{ secrets.REGION }}
+          TF_VAR_gcp_credentials: ${{ secrets.GOOGLE_CREDENTIALS }}  # Pass GCP credentials
+          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}        # Pass GCP project ID
+          TF_VAR_region: ${{ secrets.REGION }}                        
